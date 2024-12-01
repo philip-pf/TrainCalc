@@ -1,0 +1,23 @@
+Alle Elemente stehen am Anfang des jeweiligen Abschnittes.
+Geschwindigkeitsbeschränkungen werden ab der Ankündigung berechnet
+Räumungsabschnitte sind die Abschnitte hinter dem Signal
+
+Streckengeschwindigkeit: 140
+Betrachtungszeitraum: 120
+
+Länge   Geschwindigkeit     Element         Bilde/Räumzeit
+
+1000                        distantSignal
+50                          mainSignal      25 15
+500                         -
+500                         distantSignal
+500                         -
+50                          mainSignal      2 1
+200                         platform
+800			                -
+800	    70		            -
+1000    70                  distantSignal
+50      70                  mainSignal      2 1
+1250    70                  -
+1000    70                  distantSignal
+50      70                  mainSignal      10 5

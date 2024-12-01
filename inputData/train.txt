@@ -1,0 +1,23 @@
+RegionalExpress
+Höchstgeschwindigkeit: 140
+Beschleunigung: 0.8
+Verzögerung: 0.9
+Länge: 200
+Anzahl: 2
+Rang: 10
+Personenzug: true
+WahrscheinlichkeitEinbruchsverspätung: 0.4
+Einbruchsverspätung: 5
+Haltezeit: 30
+
+Güterzug
+Höchstgeschwindigkeit: 90
+Beschleunigung: 0.5
+Verzögerung: 0.4
+Länge: 550
+Anzahl: 4
+Rang: 16
+Personenzug: false
+WahrscheinlichkeitEinbruchsverspätung: 0.6
+Einbruchsverspätung: 20
+Haltezeit: 0
