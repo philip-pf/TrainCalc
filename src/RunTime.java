@@ -141,7 +141,6 @@ public class RunTime {
                 //Wenn in diesem Durchlauf der Haltepunkt bearbeitet wurde, den Eintrag um die Haltezeit verlängern
                 if (track.getElement().equals("platform") && train.isStop()) {
                     blockTime.set(blockTime.size() - 1, blockTime.get(blockTime.size() - 1) + train.getStopTime());
-                    System.out.println(track.getElement());
                 }
                 index++; //Index hochzählen bevor der nächste Abschnitt bearbeitet wird
 

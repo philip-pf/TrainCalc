@@ -35,7 +35,7 @@ public class Calculations {
             //System.out.print("Erster Beschleunigungsabschnitt - ");
 
             if (calcDistanceAcceleration(maximumSpeed, train) + train.getTailLength() <= track.getLength()) {
-                //Wenn der Abschnitt lang genug ist um in ihm vollständig zu beschleunigen
+                //Wenn der Abschnitt lang genug ist, um in ihm vollständig zu beschleunigen
                 //System.out.println("lang genug");
 
                 double constantSpeedTimeLow = calcTimeConstant(train.getTailLength(), train.getActualSpeed()); //damit der Zug noch mit dem Zugschluss den langsamen Bereich verlässt
@@ -51,7 +51,7 @@ public class Calculations {
                 return constantSpeedTimeLow + accelerationTime + constantSpeedTimeHigh;
 
             } else {
-                //wenn der Abschnitt zu kurz ist um vollständig zu beschleunigen
+                //wenn der Abschnitt zu kurz ist, um vollständig zu beschleunigen
                 //System.out.println("nicht lang genug");
 
 

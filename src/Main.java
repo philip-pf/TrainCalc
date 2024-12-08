@@ -50,7 +50,7 @@ public class Main {
         for (Track track : tracks)
             if (track.getElement().equals("mainSignal")) blockAmount++;
 
-
+        writer.println("Sperrzeitenanteile");
         //Fahrzeiten ausgeben
         writer.print("Zug                 ");
         for (int j = 0; j < blockAmount; j++)
@@ -91,15 +91,15 @@ public class Main {
         double[][] minimumHeadwayTable = new double[trains.size()][trains.size()];
 
 
-        System.out.println("Mindestzugfolgezeiten:");
+        writer.println("Mindestzugfolgezeiten:");
         for (int i = 0; i < minimumHeadwayTable.length; i++) {
             for (int j = 0; j < minimumHeadwayTable.length; j++) {
                 minimumHeadwayTable[i][j] = findMinimumHeadway(tracks, trains.get(i), trains.get(j));
-                System.out.print(Math.ceil(minimumHeadwayTable[i][j]) + "\t");
+                writer.print(Math.ceil(minimumHeadwayTable[i][j]) + "\t");
             }
-            System.out.println();
+            writer.println();
         }
-        System.out.println();
+        writer.println();
 
         //Gesamtzahl der Züge
         double numberOfTrains = 0;
@@ -109,29 +109,29 @@ public class Main {
         //mittlere Mindestzugfolgezeit, dazu die Mindestzugfolgezeitmatrix mit den Zugfahrten multiplizieren
         double[][] averageMinimumHeadwayTable = new double[trains.size()][trains.size()];
 
-        System.out.println("Mindestzugfolgezeitmatrix * Zugzahlen");
+        writer.println("Mindestzugfolgezeitmatrix * Zugzahlen");
         for (int i = 0; i < averageMinimumHeadwayTable.length; i++) {
             for (int j = 0; j < averageMinimumHeadwayTable.length; j++) {
                 averageMinimumHeadwayTable[i][j] = minimumHeadwayTable[i][j] * (trains.get(i).getNumberOf() * trains.get(j).getNumberOf());
-                System.out.print(Math.ceil(averageMinimumHeadwayTable[i][j]) + "\t\t");
+                writer.print(Math.ceil(averageMinimumHeadwayTable[i][j]) + "\t\t");
             }
-            System.out.println();
+            writer.println();
         }
-        System.out.println();
+        writer.println();
 
         //Matrix des Gleichrangs, bei Gleichrang ist der Eintrag 1 bei Ungleichrang 0
         double[][] sameRangTable = new double[trains.size()][trains.size()];
 
-        System.out.println("Gleichrangmatrix");
+        writer.println("Gleichrangmatrix");
         for (int i = 0; i < sameRangTable.length; i++) {
             for (int j = 0; j < sameRangTable.length; j++) {
                 if (trains.get(i).getRang() == trains.get(j).getRang()) sameRangTable[i][j] = 1;
                 else sameRangTable[i][j] = 0;
-                System.out.print(sameRangTable[i][j] + "\t");
+                writer.print(sameRangTable[i][j] + "\t");
             }
-            System.out.println();
+            writer.println();
         }
-        System.out.println();
+        writer.println();
 
         //Gesamtzahl der Zugfolgefälle
         double totalTrains = 0;
@@ -189,59 +189,63 @@ public class Main {
 
         //Durchschnittliche Mindestzugfolgezeit
         double averageHeadway = sumAverageHeadway / totalTrains;
-        System.out.println("mittlere Zugfolgezeit: " + averageHeadway + "s");
+        writer.println("mittlere Zugfolgezeit: " + averageHeadway + "s");
 
         //Durchschnittliche Mindestzugfolgezeit Gleichrang
         double averageHeadwaySame = sumAverageHeadwaySame / totalTrainsSame;
         //averageHeadwaySame=3.6;
-        System.out.println("mittlere Zugfolgezeit Gleichrang: " + averageHeadwaySame + "s");
+        writer.println("mittlere Zugfolgezeit Gleichrang: " + averageHeadwaySame + "s");
 
         //Durchschnittliche Mindestzugfolgezeit Ungleichrang
         double averageHeadwayDiffer = sumAverageHeadwayDiffer / (totalTrains - totalTrainsSame);
         //averageHeadwayDiffer=3.69;
-        System.out.println("mittlere Zugfolgezeit Ungleichrang: " + averageHeadwayDiffer + "s");
+        writer.println("mittlere Zugfolgezeit Ungleichrang: " + averageHeadwayDiffer + "s");
+        writer.println();
 
         //Belegungszeit
         double blockedTime = averageHeadway * numberOfTrains;
-        System.out.println("Belegungszeit: " + blockedTime + "s");
+        writer.println("Belegungszeit: " + blockedTime + "s");
 
         //Verketteter Belegungsgrad
         double blockedRate = blockedTime / timeSpan;
-        System.out.println("Verketteter Belegungsgrad: " + blockedRate);
+        writer.println("Verketteter Belegungsgrad: " + blockedRate);
 
         //mittlere vorhandene Pufferzeit
         double averageRealBuffer = (timeSpan - blockedTime) / numberOfTrains;
-        System.out.println("Mittlere vorhandene Pufferzeit: " + averageRealBuffer + "s");
+        writer.println("Mittlere vorhandene Pufferzeit: " + averageRealBuffer + "s");
+        writer.println();
 
         //Wahrscheinlichkeit des Gleichrangs
         double probabilitySameRang = totalTrainsSame / totalTrains;
-        System.out.println("Wahrscheinlichkeit der gleichrangigen Zugfolge: " + probabilitySameRang);
+        writer.println("Wahrscheinlichkeit der gleichrangigen Zugfolge: " + probabilitySameRang);
 
         //Wahrscheinlichkeit für das Auftreten einer Einbruchsverspätung
         double numberOfDelyaedTrains = 0;
         for (Train train : trains)
             numberOfDelyaedTrains += train.getNumberOf() * train.getProbabilityDelay();
         double probabilityOfDelay = numberOfDelyaedTrains / numberOfTrains;
-        System.out.println("Wahrscheinlichkeit einer Einbruchsverspätung: " + probabilityOfDelay);
+        writer.println("Wahrscheinlichkeit einer Einbruchsverspätung: " + probabilityOfDelay);
 
         //durchschnittliche Einbruchsverspätung ^-1
         double delay = 0;
         for (Train train : trains)
             delay += train.getAverageDelay() * train.getNumberOf() * train.getProbabilityDelay();
         double averageDelay = numberOfDelyaedTrains / delay;
-        System.out.println("Kehrwert der Durchschnittlichen Einbruchsverspätungen: " + averageDelay);
+        writer.println("Kehrwert der Durchschnittlichen Einbruchsverspätungen: " + averageDelay);
 
         //maximale Folgeverspätungssumme
+        writer.println();
         double passengerProbotion = 0;
         for (Train train : trains)
             if (train.isPassenger()) passengerProbotion += train.getNumberOf();
         passengerProbotion = passengerProbotion / numberOfTrains;
         double qualityNieau = 1 * 0.26 * Math.exp(-1.3 * passengerProbotion) * timeSpan;
-        System.out.println("Zulässiger Wert der Folgeverspätungen optimal: " + qualityNieau + "s");
+        writer.println("Zulässiger Wert der Folgeverspätungen optimal: " + qualityNieau + "s");
         double qualityNieauHigh = 0.5 * 0.26 * Math.exp(-1.3 * passengerProbotion) * timeSpan;
-        System.out.println("Zulässiger Wert der Folgeverspätungen Premiumqualität: " + qualityNieauHigh + "s");
+        writer.println("Zulässiger Wert der Folgeverspätungen Premiumqualität: " + qualityNieauHigh + "s");
         double qualityNieauLow = 1.2 * 0.26 * Math.exp(-1.3 * passengerProbotion) * timeSpan;
-        System.out.println("Zulässiger Wert der Folgeverspätungen Riskobehaftet: " + qualityNieauLow + "s");
+        writer.println("Zulässiger Wert der Folgeverspätungen Riskobehaftet: " + qualityNieauLow + "s");
+        writer.println();
 
         //Pufferzeitquotient
 
@@ -265,7 +269,7 @@ public class Main {
             }
             subsequentDelay = calcSubsequentDelay(timeSpan, probabilityOfDelay, probabilitySameRang, averageDelay, averageHeadway, averageHeadwaySame, averageHeadwayDiffer, bufferQuotient);
         }
-        System.out.println("Pufferzeitquotient optimal: " + bufferQuotient);
+        writer.println("Pufferzeitquotient optimal: " + bufferQuotient);
 
         multiplier = 0.1;
         double bufferQuotientHigh = 0.1;
@@ -281,7 +285,7 @@ public class Main {
             }
             subsequentDelay = calcSubsequentDelay(timeSpan, probabilityOfDelay, probabilitySameRang, averageDelay, averageHeadway, averageHeadwaySame, averageHeadwayDiffer, bufferQuotientHigh);
         }
-        System.out.println("Pufferzeitquotient Premiumqualität: " + bufferQuotientHigh);
+        writer.println("Pufferzeitquotient Premiumqualität: " + bufferQuotientHigh);
 
         multiplier = 0.1;
         double bufferQuotientLow = 0.1;
@@ -296,33 +300,36 @@ public class Main {
             }
             subsequentDelay = calcSubsequentDelay(timeSpan, probabilityOfDelay, probabilitySameRang, averageDelay, averageHeadway, averageHeadwaySame, averageHeadwayDiffer, bufferQuotientLow);
         }
-        System.out.println("Pufferzeitquotient Risikobehaftet: " + bufferQuotientLow);
+        writer.println("Pufferzeitquotient Risikobehaftet: " + bufferQuotientLow);
 
         //mittlere erforderliche Pufferzeit
+        writer.println();
         double neededBuffer = averageHeadway * bufferQuotient;
-        System.out.println("mittlere erforderliche Pufferzeit Optimale Qualität: " + neededBuffer + "s");
+        writer.println("mittlere erforderliche Pufferzeit Optimale Qualität: " + neededBuffer + "s");
         double neededBufferHigh = averageHeadway * bufferQuotientHigh;
-        System.out.println("mittlere erforderliche Pufferzeit Premiumqualität: " + neededBufferHigh + "s");
+        writer.println("mittlere erforderliche Pufferzeit Premiumqualität: " + neededBufferHigh + "s");
         double neededBufferLow = averageHeadway * bufferQuotientLow;
-        System.out.println("mittlere erforderliche Pufferzeit Risikobehaftete Qualität: " + neededBufferLow + "s");
+        writer.println("mittlere erforderliche Pufferzeit Risikobehaftete Qualität: " + neededBufferLow + "s");
 
         //Leistungsfähigkeit
+        writer.println();
         double possibleTrains = timeSpan / (averageHeadway + neededBuffer);
-        System.out.println("Leistungsfähigkeit optimal: " + possibleTrains + " Züge");
+        writer.println("Leistungsfähigkeit optimal: " + possibleTrains + " Züge");
         double possibleTrainsHigh = timeSpan / (averageHeadway + neededBufferHigh);
-        System.out.println("Leistungsfähigkeit Premiumqualität: " + possibleTrainsHigh + " Züge");
+        writer.println("Leistungsfähigkeit Premiumqualität: " + possibleTrainsHigh + " Züge");
         double possibleTrainsLow = timeSpan / (averageHeadway + neededBufferLow);
-        System.out.println("Leistungsfähigkeit Risikobehaftet: " + possibleTrainsLow + " Züge");
+        writer.println("Leistungsfähigkeit Risikobehaftet: " + possibleTrainsLow + " Züge");
 
         //Bestimmung, ob das Betriebsprogramm fahrbar ist
+        writer.println();
         if (possibleTrains >= numberOfTrains && averageRealBuffer >= neededBuffer)
-            System.out.println("Das Betriebsprogramm ist fahrbar");
+            writer.println("Das Betriebsprogramm ist fahrbar");
         else if (possibleTrains >= numberOfTrains && averageRealBuffer < neededBuffer)
-            System.out.println("Das Betriebsprogramm ist nicht fahrbar - Pufferzeit nicht ausreichend");
+            writer.println("Das Betriebsprogramm ist nicht fahrbar - Pufferzeit nicht ausreichend");
         else if (possibleTrains < numberOfTrains && averageRealBuffer > neededBuffer)
-            System.out.println("Das Betriebsprogramm ist nicht fahrbar - Leistungsfähigkeit nicht ausreichend");
+            writer.println("Das Betriebsprogramm ist nicht fahrbar - Leistungsfähigkeit nicht ausreichend");
         else
-            System.out.println("Das Betriebsprogramm ist nicht fahrbar - Leistungsfähigkeit und Pufferzeit nicht ausreichend");
+            writer.println("Das Betriebsprogramm ist nicht fahrbar - Leistungsfähigkeit und Pufferzeit nicht ausreichend");
 
 
         writer.close();
