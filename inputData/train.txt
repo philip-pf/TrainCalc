@@ -3,7 +3,7 @@ Höchstgeschwindigkeit: 140
 Beschleunigung: 0.8
 Verzögerung: 0.9
 Länge: 200
-Anzahl: 2
+Anzahl: 4
 Rang: 10
 Personenzug: true
 WahrscheinlichkeitEinbruchsverspätung: 0.4

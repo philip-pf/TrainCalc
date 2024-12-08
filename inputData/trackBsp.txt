@@ -5,7 +5,7 @@ Räumungsabschnitte sind die Abschnitte hinter dem Signal
 Streckengeschwindigkeit: 140
 Betrachtungszeitraum: 120
 
-Länge   Geschwindigkeit     Element         Bilde/Räumzeit
+Länge   Geschwindigkeit     Element         Bilde/Auflösezeit
 
 1000                        distantSignal
 50                          mainSignal      25 15
